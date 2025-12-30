@@ -102,6 +102,26 @@ h1 {
   padding: 32px;
 }
 
+.resume-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 18px;
+  align-items: center;
+  font-family: "Space Grotesk", "Helvetica", sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.resume-links a {
+  color: var(--accent);
+  border-bottom-color: transparent;
+}
+
+.resume-links a:hover {
+  border-bottom-color: var(--accent);
+}
+
 .resume-content h1 {
   margin: 0 0 16px;
   font-size: 1.6rem;
@@ -162,5 +182,30 @@ a:hover {
   .footer {
     flex-direction: column;
     gap: 8px;
+  }
+}
+
+@media print {
+  body {
+    background: #ffffff;
+  }
+
+  .page {
+    max-width: none;
+    padding: 0;
+    gap: 24px;
+  }
+
+  .mast,
+  .section {
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    padding: 0;
+  }
+
+  .resume-links,
+  .back-link {
+    display: none;
   }
 }
