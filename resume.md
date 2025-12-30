@@ -38,7 +38,7 @@ collaboration, process-driven operational excellence, and modern platforms.
 Financial services company with annual turnover of USD 34B. Provides a full line
 of financial products including banking and insurance.
 
-SVP, CIO Shared Services and Infrastructure, Feb 2022-Present
+SVP, CIO Shared Services and Infrastructure, Jan 2023-Present
 
 - Placeholder: Add scope, organization size, budget, and key initiatives.
 - Placeholder: Add top business outcomes and modernization milestones.
