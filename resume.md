@@ -1,8 +1,6 @@
 # John McChesney TenEyck Jr.
 
-john.m.teneyck@gmail.com | +1 210 284 6075
-
-San Antonio, TX, USA
+john.m.teneyck@gmail.com
 
 Senior Technology Executive
 
