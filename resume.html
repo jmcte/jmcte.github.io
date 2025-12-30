@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Resume | John McChesney TenEyck Jr.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500&family=Space+Grotesk:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="mast">
+        <p class="eyebrow">Resume</p>
+        <h1>John McChesney TenEyck Jr.</h1>
+        <p class="lede">Leadership experience and business outcomes.</p>
+        <a class="back-link" href="/">Back to home</a>
+      </header>
+
+      <section class="section resume-section">
+        <div id="resume" class="resume-content">
+          <p>Loading resume...</p>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const escapeHtml = (value) =>
+        value
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/\"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+
+      const linkify = (value) =>
+        value.replace(
+          /(https?:\/\/[^\s]+)/g,
+          '<a href="$1" target="_blank" rel="noreferrer">$1</a>'
+        );
+
+      const renderMarkdown = (markdown) => {
+        const lines = markdown.split(/\r?\n/);
+        let html = "";
+        let inList = false;
+        let paragraph = [];
+
+        const flushParagraph = () => {
+          if (paragraph.length === 0) {
+            return;
+          }
+          const text = paragraph.join(" ").trim();
+          if (text) {
+            const safe = linkify(escapeHtml(text));
+            html += `<p>${safe}</p>`;
+          }
+          paragraph = [];
+        };
+
+        const closeList = () => {
+          if (inList) {
+            html += "</ul>";
+            inList = false;
+          }
+        };
+
+        lines.forEach((line) => {
+          const trimmed = line.trim();
+
+          if (!trimmed) {
+            flushParagraph();
+            closeList();
+            return;
+          }
+
+          if (trimmed.startsWith("# ")) {
+            flushParagraph();
+            closeList();
+            html += `<h1>${escapeHtml(trimmed.slice(2))}</h1>`;
+            return;
+          }
+
+          if (trimmed.startsWith("## ")) {
+            flushParagraph();
+            closeList();
+            html += `<h2>${escapeHtml(trimmed.slice(3))}</h2>`;
+            return;
+          }
+
+          if (trimmed.startsWith("### ")) {
+            flushParagraph();
+            closeList();
+            html += `<h3>${escapeHtml(trimmed.slice(4))}</h3>`;
+            return;
+          }
+
+          if (trimmed.startsWith("- ")) {
+            flushParagraph();
+            if (!inList) {
+              html += "<ul>";
+              inList = true;
+            }
+            const item = linkify(escapeHtml(trimmed.slice(2)));
+            html += `<li>${item}</li>`;
+            return;
+          }
+
+          paragraph.push(trimmed);
+        });
+
+        flushParagraph();
+        closeList();
+        return html;
+      };
+
+      const resumeEl = document.getElementById("resume");
+
+      fetch("resume.md")
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Failed to load resume");
+          }
+          return response.text();
+        })
+        .then((markdown) => {
+          resumeEl.innerHTML = renderMarkdown(markdown);
+        })
+        .catch(() => {
+          resumeEl.innerHTML =
+            "<p>Unable to load the resume right now. Please refresh later.</p>";
+        });
+    </script>
+  </body>
+</html>
