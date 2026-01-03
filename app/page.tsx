@@ -22,6 +22,7 @@ import {
   CardHeader,
   CardTitle
 } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 type IconCard = {
   title: string;
@@ -187,7 +188,7 @@ export default function Home() {
               return (
                 <Card
                   key={area.title}
-                  className={`reveal ${area.delayClass ?? \"\"}`.trim()}
+                  className={cn("reveal", area.delayClass)}
                 >
                   <CardHeader>
                     <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent/10 text-accent ring-1 ring-accent/20">
