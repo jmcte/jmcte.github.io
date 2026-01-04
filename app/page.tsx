@@ -1,3 +1,5 @@
+"use client";
+
 import type { LucideIcon } from "lucide-react";
 import {
   ArrowUpRight,
@@ -12,6 +14,7 @@ import {
   WandSparkles,
   Workflow
 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -30,6 +33,13 @@ type IconCard = {
   icon: LucideIcon;
   animation: string;
   delayClass?: string;
+};
+
+type PortfolioItem = {
+  title: string;
+  description: string;
+  tags: string[];
+  icon: LucideIcon;
 };
 
 type Highlight = {
@@ -107,7 +117,71 @@ const currentHighlights: Highlight[] = [
   }
 ];
 
+const portfolio: PortfolioItem[] = [
+  {
+    title: "Portfolio operating system",
+    description:
+      "Bootstrapped a lean platform for managing experiments, shipping faster than a managed suite while keeping reliability front and center.",
+    tags: ["platform", "experiments", "reliability"],
+    icon: Server
+  },
+  {
+    title: "Geo-aware services",
+    description:
+      "Built a calm, globally-available service mesh with sane defaults and escape hatches, balancing developer speed with observability.",
+    tags: ["infrastructure", "observability", "DX"],
+    icon: Globe
+  },
+  {
+    title: "Guided onboarding",
+    description:
+      "Designed a narrative onboarding flow for new teams that mixed docs, small wins, and a few intentional rough edges to invite collaboration.",
+    tags: ["product", "onboarding", "craft"],
+    icon: BookOpen
+  }
+];
+
+const actionCards = [
+  {
+    title: "Resume",
+    description: "Detailed leadership experience and measurable outcomes.",
+    primary: {
+      label: "View resume",
+      href: "/resume.html",
+      icon: BookOpen
+    },
+    secondary: [
+      { label: "Download PDF", href: "/resume.pdf" },
+      { label: "Download Markdown", href: "/resume.md" }
+    ]
+  },
+  {
+    title: "Contact",
+    description:
+      "Reach out for collaborations, advisory work, or platform strategy.",
+    primary: {
+      label: "Email John",
+      href: "mailto:john.m.teneyck@gmail.com",
+      icon: Mail
+    },
+    secondary: []
+  }
+];
+
 export default function Home() {
+  const [showActions, setShowActions] = useState(false);
+  const actionsRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (showActions && actionsRef.current) {
+      actionsRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [showActions]);
+
+  const handleActionClick = () => {
+    setShowActions(true);
+  };
+
   return (
     <div className="relative min-h-screen overflow-hidden">
       <div
@@ -137,17 +211,13 @@ export default function Home() {
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
-              <Button asChild size="lg">
-                <a href="/resume.html">
-                  View resume
-                  <ArrowUpRight className="h-4 w-4" />
-                </a>
+              <Button size="lg" onClick={handleActionClick}>
+                View resume
+                <ArrowUpRight className="h-4 w-4" />
               </Button>
-              <Button asChild size="lg" variant="outline">
-                <a href="mailto:john.m.teneyck@gmail.com">
-                  Email John
-                  <Mail className="h-4 w-4" />
-                </a>
+              <Button size="lg" variant="outline" onClick={handleActionClick}>
+                Email John
+                <Mail className="h-4 w-4" />
               </Button>
             </div>
             <div className="flex items-center gap-3 text-sm text-muted-foreground">
@@ -206,11 +276,42 @@ export default function Home() {
         <section className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="space-y-4">
             <h2 className="text-2xl font-semibold">Currently</h2>
-            <p className="text-muted-foreground">
-              Working on software that is fast, dependable, and respectful of
-              people's time. I like lean teams, clear goals, and measurable
-              outcomes.
-            </p>
+            <div className="space-y-3 text-muted-foreground">
+              <p>
+                Working on software that is fast, dependable, and respectful of
+                people's time. I like lean teams, clear goals, and measurable
+                outcomes, but I also enjoy the messy bits: the scribbles in the
+                margins, the imperfect dashboards, the candid post-mortems that
+                make the next launch lighter.
+              </p>
+              <p>
+                Lately I have been pairing with founders, running small
+                experiments, and carving out paved paths so teams can ship with
+                less ceremony. On good days I end up with a practical checklist
+                and a funny git commit message that reminds us to keep some
+                personality in the work.
+              </p>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <Card className="reveal">
+                <CardContent className="space-y-2 pt-4 text-sm text-muted-foreground">
+                  <p className="font-semibold text-foreground">What I am testing</p>
+                  <p>
+                    Fast feedback loops with teams across time zones, mixing
+                    async rituals with short bursts of focused pairing.
+                  </p>
+                </CardContent>
+              </Card>
+              <Card className="reveal reveal-delay-1">
+                <CardContent className="space-y-2 pt-4 text-sm text-muted-foreground">
+                  <p className="font-semibold text-foreground">What I am learning</p>
+                  <p>
+                    That a little friction can be healthy: rough drafts, honest
+                    check-ins, and a playlist playing quietly in the background.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
           </div>
 
           <Card className="reveal reveal-delay-2">
@@ -243,49 +344,105 @@ export default function Home() {
           </Card>
         </section>
 
-        <section className="grid gap-6 lg:grid-cols-2">
-          <Card className="reveal reveal-delay-1">
-            <CardHeader>
-              <CardTitle>Resume</CardTitle>
-              <CardDescription>
-                Detailed leadership experience and measurable outcomes.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex flex-wrap gap-3">
-              <Button asChild>
-                <a href="/resume.html">
-                  View resume
-                  <BookOpen className="h-4 w-4" />
-                </a>
-              </Button>
-              <Button asChild variant="outline">
-                <a href="/resume.pdf">Download PDF</a>
-              </Button>
-              <Button asChild variant="outline">
-                <a href="/resume.md">Download Markdown</a>
-              </Button>
-            </CardContent>
-          </Card>
+        <section
+          ref={actionsRef}
+          className={cn(
+            "grid gap-6 transition-all",
+            showActions ? "lg:grid-cols-2" : "max-h-0 overflow-hidden opacity-0"
+          )}
+          aria-live="polite"
+        >
+          {actionCards.map((card, index) => {
+            const PrimaryIcon = card.primary.icon;
+            return (
+              <Card
+                key={card.title}
+                className={cn("reveal", index === 0 ? "reveal-delay-1" : "reveal-delay-2")}
+              >
+                <CardHeader>
+                  <CardTitle>{card.title}</CardTitle>
+                  <CardDescription>{card.description}</CardDescription>
+                </CardHeader>
+                <CardContent className="flex flex-wrap gap-3">
+                  <Button asChild>
+                    <a href={card.primary.href}>
+                      {card.primary.label}
+                      <PrimaryIcon className="h-4 w-4" />
+                    </a>
+                  </Button>
+                  {card.secondary.map((item) => (
+                    <Button key={item.label} asChild variant="outline">
+                      <a href={item.href}>{item.label}</a>
+                    </Button>
+                  ))}
+                </CardContent>
+              </Card>
+            );
+          })}
+        </section>
 
-          <Card className="reveal reveal-delay-2">
-            <CardHeader>
-              <CardTitle>Contact</CardTitle>
-              <CardDescription>
-                Reach out for collaborations, advisory work, or platform strategy.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-4">
-              <div className="flex items-center gap-3 rounded-2xl border border-border/60 bg-muted/50 p-4">
-                <Mail className="h-5 w-5 text-primary" />
-                <div>
-                  <p className="text-sm text-muted-foreground">Email</p>
-                  <a className="font-sans text-sm font-semibold" href="mailto:john.m.teneyck@gmail.com">
-                    john.m.teneyck@gmail.com
-                  </a>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+        <section className="space-y-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-semibold">Portfolio</h2>
+            <span className="text-sm text-muted-foreground">A few favorites</span>
+          </div>
+          <div className="grid gap-6 lg:grid-cols-3">
+            {portfolio.map((item, idx) => {
+              const Icon = item.icon;
+              return (
+                <Card
+                  key={item.title}
+                  className={cn("reveal", idx === 1 ? "reveal-delay-1" : idx === 2 ? "reveal-delay-2" : "")}
+                >
+                  <CardHeader>
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary ring-1 ring-primary/20">
+                      <Icon className="h-6 w-6" />
+                    </div>
+                    <CardTitle>{item.title}</CardTitle>
+                    <CardDescription>{item.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex flex-wrap gap-2">
+                    {item.tags.map((tag) => (
+                      <Badge key={tag} variant="secondary">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </section>
+
+        <section className="space-y-3">
+          <h2 className="text-2xl font-semibold">More about me</h2>
+          <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
+            <div className="space-y-3 text-muted-foreground">
+              <p>
+                I grew up debugging neighborhood networks, wiring tiny servers to
+                coaxed-together routers, and running LAN parties that probably
+                pushed the power bill higher than my allowance. That curiosity
+                never really stopped.
+              </p>
+              <p>
+                These days I split time between building systems, coaching teams,
+                and writing about the small, human choices that make big
+                infrastructure feel friendly. If we work together, you will hear
+                me talk about uptime and incident reviews, but also about walks,
+                coffee rituals, and the playlists that keep the team steady.
+              </p>
+            </div>
+            <Card className="reveal">
+              <CardContent className="space-y-2 pt-4 text-sm text-muted-foreground">
+                <p className="font-semibold text-foreground">Outside the laptop</p>
+                <ul className="list-disc space-y-1 pl-5">
+                  <li>Trail runs with a pocket notebook for stray ideas.</li>
+                  <li>Field-recording sounds that sometimes sneak into demos.</li>
+                  <li>Restoring old mechanical keyboards one stubborn spring at a time.</li>
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
         </section>
 
         <footer className="flex items-center justify-between border-t border-border/60 pt-6 text-sm text-muted-foreground">
