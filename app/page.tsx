@@ -314,34 +314,54 @@ export default function Home() {
             </div>
           </div>
 
-          <Card className="reveal reveal-delay-2">
-            <CardHeader>
-              <CardTitle>Operating rhythm</CardTitle>
-              <CardDescription>
-                Focused on clarity, trust, and durable delivery.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {currentHighlights.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <div key={item.label} className="flex gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-muted text-foreground">
-                      <Icon className="h-5 w-5" />
+          <div className="space-y-6">
+            <Card className="reveal reveal-delay-2">
+              <CardHeader>
+                <CardTitle>Operating rhythm</CardTitle>
+                <CardDescription>
+                  Focused on clarity, trust, and durable delivery.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {currentHighlights.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <div key={item.label} className="flex gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-muted text-foreground">
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <p className="font-sans text-sm font-semibold">
+                          {item.label}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          {item.detail}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="font-sans text-sm font-semibold">
-                        {item.label}
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        {item.detail}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
-            </CardContent>
-          </Card>
+                  );
+                })}
+              </CardContent>
+            </Card>
+            <Card className="reveal reveal-delay-3">
+              <CardHeader>
+                <CardTitle>Outside the laptop</CardTitle>
+                <CardDescription>
+                  Family time, travel plans, and beach resets.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-muted-foreground">
+                <p>
+                  Family comes first, whether it is a quiet dinner at home or a
+                  weekend adventure together.
+                </p>
+                <p>
+                  I am usually mapping the next trip and will always take the
+                  beach when I can.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
         </section>
 
         <section
