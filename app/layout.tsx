@@ -1,18 +1,24 @@
 import type { Metadata } from "next";
-import { Space_Grotesk } from "next/font/google";
+import { Geist } from "next/font/google";
 
 import "./globals.css";
 
-const spaceGrotesk = Space_Grotesk({
+const geist = Geist({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap"
 });
 
 export const metadata: Metadata = {
-  title: "John McChesney TenEyck Jr.",
-  description:
-    "Builder and operator focused on practical systems, product craftsmanship, and reliable infrastructure."
+  title: "Redirecting to jmcte.me",
+  description: "jmcte.github.io redirects to the primary jmcte.me site.",
+  alternates: {
+    canonical: "https://jmcte.me/"
+  },
+  robots: {
+    index: false,
+    follow: false
+  }
 };
 
 export default function RootLayout({
@@ -21,7 +27,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={spaceGrotesk.variable}>
+    <html lang="en" className={geist.variable}>
+      <head>
+        <meta httpEquiv="refresh" content="0; url=https://jmcte.me/" />
+      </head>
       <body className="font-sans antialiased">{children}</body>
     </html>
   );
