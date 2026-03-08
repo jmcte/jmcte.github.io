@@ -1,5 +1,5 @@
 import { RedirectNotice } from "@/components/redirect-notice";
 
-export default function Home() {
+export default function NotFound() {
   return <RedirectNotice />;
 }
